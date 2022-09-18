@@ -1,8 +1,13 @@
 // ignore_for_file: constant_identifier_names
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../widgets/products_grid.dart';
+import '../widgets/badge.dart';
+import '../providers/cart.dart';
+import '../screens/cart_screen.dart';
+import '../widgets/app_drawer.dart';
 
 enum FilterOptions {
   Favorites,
@@ -43,8 +48,18 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
                 )
               ]),
           icon: const Icon(Icons.more_vert),
-        )
+        ),
+        Consumer<Cart>(
+          builder: ((context, cartItems, ch) =>
+              Badge(value: cartItems.quantityCount, child: ch!)),
+          child: IconButton(
+              icon: const Icon(Icons.shopping_cart),
+              onPressed: (() {
+                Navigator.of(context).pushNamed(CartScreen.routeName);
+              })),
+        ),
       ]),
+      drawer: const AppDrawer(),
       body: ProductsGrid(_showOnlyFavorites),
     );
   }
