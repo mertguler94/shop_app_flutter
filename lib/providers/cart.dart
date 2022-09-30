@@ -11,6 +11,23 @@ class CartItem {
       required this.title,
       required this.quantity,
       required this.price});
+
+  Map<String, dynamic> toJson() {
+    return {
+      "id": id,
+      "title": title,
+      "quantity": quantity,
+      "price": price,
+    };
+  }
+
+  factory CartItem.fromJson(dynamic json) {
+    return CartItem(
+        id: json['id'] as String,
+        title: json['title'] as String,
+        quantity: json['quantity'] as int,
+        price: json['price'] as double);
+  }
 }
 
 class Cart with ChangeNotifier {
@@ -54,11 +71,8 @@ class Cart with ChangeNotifier {
     } else {
       _items.putIfAbsent(
           productId,
-          () => CartItem(
-              id: DateTime.now().toString(),
-              title: title,
-              quantity: 1,
-              price: price));
+          () =>
+              CartItem(id: productId, title: title, quantity: 1, price: price));
     }
     notifyListeners();
   }
