@@ -20,15 +20,25 @@ class OrderItem {
 }
 
 class Orders with ChangeNotifier {
+  late String? _authToken;
+  late String? _userId;
   List<OrderItem> _orders = [];
+
+  set authToken(String? value) {
+    _authToken = value;
+  }
+
+  set userId(String? value) {
+    _userId = value;
+  }
 
   List<OrderItem> get orders {
     return [..._orders];
   }
 
   Future<void> fetchAndSetOrders() async {
-    final url = Uri.https(
-        'shop-app-flutter-e5239-default-rtdb.firebaseio.com', '/orders.json');
+    final url = Uri.parse(
+        'https://shop-app-flutter-e5239-default-rtdb.firebaseio.com/orders/$_userId.json?auth=$_authToken');
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>?;
@@ -62,8 +72,8 @@ class Orders with ChangeNotifier {
   Future<void> addOrder(List<CartItem> cartProducts, double total) async {
     if (cartProducts.isNotEmpty) {
       final timestamp = DateTime.now();
-      final url = Uri.https(
-          'shop-app-flutter-e5239-default-rtdb.firebaseio.com', '/orders.json');
+      final url = Uri.parse(
+          'https://shop-app-flutter-e5239-default-rtdb.firebaseio.com/orders/$_userId.json?auth=$_authToken');
 
       try {
         // dynamic myDateSerializer(dynamic object) {
