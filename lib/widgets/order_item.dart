@@ -19,27 +19,35 @@ class _OrderItemState extends State<OrderItem> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.all(10),
-      child: Column(children: [
-        ListTile(
-          title: Text('\$${widget.order.amount.toStringAsFixed(2)}'),
-          subtitle: Text(
-              DateFormat('dd/MM/yyyy hh:mm').format(widget.order.dateTime)),
-          trailing: IconButton(
-              onPressed: (() {
-                setState(() {
-                  _expanded = !_expanded;
-                });
-              }),
-              icon: _expanded
-                  ? const Icon(Icons.expand_less)
-                  : const Icon(Icons.expand_more)),
-        ),
-        if (_expanded)
-          Container(
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      height: _expanded
+          ? min(widget.order.products.length * 20.0 + 110.0, 200.0)
+          : 95,
+      curve: Curves.linear,
+      child: Card(
+        margin: const EdgeInsets.all(10),
+        child: Column(children: [
+          ListTile(
+            title: Text('\$${widget.order.amount.toStringAsFixed(2)}'),
+            subtitle: Text(
+                DateFormat('dd/MM/yyyy hh:mm').format(widget.order.dateTime)),
+            trailing: IconButton(
+                onPressed: (() {
+                  setState(() {
+                    _expanded = !_expanded;
+                  });
+                }),
+                icon: _expanded
+                    ? const Icon(Icons.expand_less)
+                    : const Icon(Icons.expand_more)),
+          ),
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 300),
+            height: _expanded
+                ? min(widget.order.products.length * 20.0 + 10.0, 100.0)
+                : 0,
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
-            height: min(widget.order.products.length * 20.0 + 10.0, 100.0),
             child: ListView.builder(
               itemBuilder: ((context, i) {
                 return Row(
@@ -60,7 +68,8 @@ class _OrderItemState extends State<OrderItem> {
               itemCount: widget.order.products.length,
             ),
           )
-      ]),
+        ]),
+      ),
     );
   }
 }

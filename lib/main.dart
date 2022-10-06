@@ -15,6 +15,7 @@ import './screens/user_products_screen.dart';
 import './screens/edit_product_screen.dart';
 import './screens/auth_screen.dart';
 import './screens/splash_screen.dart';
+// import './helpers/custom_route.dart';
 
 Future main() async {
   await dotenv.load(fileName: ".env");
@@ -40,7 +41,7 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProxyProvider<Auth, Orders?>(
             create: ((context) => Orders()),
             update: ((context, auth, previousOrders) {
-              previousOrders?.authToken = auth.token!;
+              previousOrders?.authToken = auth.token;
               return previousOrders?..userId = auth.userId;
             }),
           ),
@@ -54,6 +55,11 @@ class MyApp extends StatelessWidget {
                         ColorScheme.fromSwatch(primarySwatch: Colors.purple)
                             .copyWith(secondary: Colors.deepOrange),
                     fontFamily: 'Lato',
+                    // CUSTOM PAGE TRANSITIONS FOR ALL PAGES.
+                    // pageTransitionsTheme: PageTransitionsTheme(builders: {
+                    //   TargetPlatform.android: CustomPageTransitionBuilder(),
+                    //   TargetPlatform.iOS: CustomPageTransitionBuilder(),
+                    // }),
                   ),
                   home: auth.isAuth
                       ? const ProductsOverviewScreen()

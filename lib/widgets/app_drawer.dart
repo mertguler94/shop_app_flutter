@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../screens/orders_screen.dart';
 import '../screens/user_products_screen.dart';
 import '../providers/auth.dart';
+// import '../helpers/custom_route.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({Key? key}) : super(key: key);
@@ -31,6 +32,9 @@ class AppDrawer extends StatelessWidget {
               onTap: (() {
                 Navigator.of(context)
                     .pushReplacementNamed(OrdersScreen.routeName);
+                // Navigator.of(context).pushReplacement(CustomRoute(
+                //   builder: ((context) => const OrdersScreen()),
+                // ));
               })),
           const Divider(),
           ListTile(
@@ -42,8 +46,15 @@ class AppDrawer extends StatelessWidget {
               })),
           const Divider(),
           ListTile(
-              leading: const Icon(Icons.exit_to_app),
-              title: const Text('Logout'),
+              leading: const Icon(
+                Icons.exit_to_app,
+                color: Colors.red,
+              ),
+              title: const Text(
+                'Logout',
+                style:
+                    TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
+              ),
               onTap: (() {
                 Navigator.of(context).pop();
                 Navigator.of(context).pushReplacementNamed('/');
